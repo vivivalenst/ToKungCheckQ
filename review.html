@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Reviews - Vivivalen Studio</title>
+    <link rel="preconnect" href="https://mybytobwciyvyevfmozb.supabase.co">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <script src="config.js"></script>
+    <script src="theme.js"></script>
+    <script src="plan.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══ THEME VARIABLES ════════════════════════════════════════ */
+        :root {
+            --c1:#FFB6C1; --c2:#FFC8D2; --c3:#FFE4E8; --c4:#FFF0F2;
+            --c5:#C9768A; --c5d:#D47890; --c5m:#E098A8; --c5x:#8B4A5C; --cdark:#3D1028;
+            --c1rgb:255,182,193; --c2rgb:255,200,210; --c5rgb:201,118,138; --cdarkrgb:61,16,40;
+        }
+        /* ═══ Tailwind rose-* → brand overrides ═════════════════════ */
+        .bg-rose-50  { background-color: var(--c4) !important; }
+        .bg-rose-100 { background-color: var(--c3) !important; }
+        .bg-rose-200 { background-color: var(--c2) !important; }
+        .bg-rose-300 { background-color: var(--c1) !important; }
+        .bg-rose-400 { background-color: var(--c5) !important; }
+        .bg-rose-500 { background-color: var(--c5d) !important; }
+        .text-rose-400 { color: var(--c1) !important; }
+        .text-rose-500 { color: var(--c5) !important; }
+        .text-rose-600 { color: var(--c5) !important; }
+        .border-rose-100 { border-color: var(--c3) !important; }
+        .border-rose-200 { border-color: var(--c2) !important; }
+        .border-rose-300 { border-color: var(--c1) !important; }
+        .from-rose-50  { --tw-gradient-from: var(--c4) !important; }
+        .from-rose-100 { --tw-gradient-from: var(--c3) !important; }
+        .from-rose-200 { --tw-gradient-from: var(--c2) !important; }
+        .from-rose-400 { --tw-gradient-from: var(--c5) !important; }
+        .from-rose-500 { --tw-gradient-from: var(--c5d) !important; }
+        .to-rose-50    { --tw-gradient-to: var(--c4) !important; }
+        .to-rose-100   { --tw-gradient-to: var(--c3) !important; }
+        .to-rose-200   { --tw-gradient-to: var(--c2) !important; }
+        .to-rose-500   { --tw-gradient-to: var(--c5d) !important; }
+        .to-rose-600   { --tw-gradient-to: var(--c5) !important; }
+        .hover\:bg-rose-50:hover    { background-color: var(--c4) !important; }
+        .hover\:bg-rose-100:hover   { background-color: var(--c3) !important; }
+        .hover\:bg-rose-200:hover   { background-color: var(--c2) !important; }
+        .hover\:from-rose-100:hover { --tw-gradient-from: var(--c3) !important; }
+        .hover\:from-rose-500:hover { --tw-gradient-from: var(--c5d) !important; }
+        .hover\:to-rose-200:hover   { --tw-gradient-to: var(--c2) !important; }
+        .hover\:to-rose-600:hover   { --tw-gradient-to: var(--c5) !important; }
+        .bg-rose-50\/30 { background-color: color-mix(in srgb, var(--c4) 30%, transparent) !important; }
+        .bg-rose-50\/50 { background-color: color-mix(in srgb, var(--c4) 50%, transparent) !important; }
+        .accent-rose-400 { accent-color: var(--c5) !important; }
+
+        * { font-family: 'Mali', cursive; }
+
+        /* ============================================================
+           BASE — โทนพาสเทลครีม + ลายทาง
+        ============================================================ */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Mali', cursive;
+            background-color: var(--c4); /* เปลี่ยนเป็นชมพูขาวนวล */
+            background-image: repeating-linear-gradient(
+                90deg, var(--c4) 0px, var(--c4) 20px, var(--c3) 20px, var(--c3) 40px
+            );
+            background-attachment: fixed;
+            color: var(--cdark); margin: 0; padding: 0;
+        }
+
+        /* ════════════════════════════════════════════════════
+           📐 RESPONSIVE LAYOUT
+        ════════════════════════════════════════════════════ */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        /* ════════════════════════════════════════════════════
+           📱 MOBILE (< 768px) - เหมือนเดิม
+        ════════════════════════════════════════════════════ */
+        @media (max-width: 767px) {
+            .app-container {
+                max-width: 100%;
+                padding: 14px;
+                padding-bottom: 110px;
+            }
+            .layout-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .glass-card {
+                padding: 16px !important;
+                border-radius: 16px !important;
+            }
+            #avg-rating {
+                font-size: 32px !important;
+                line-height: 1 !important;
+            }
+            .rating-summary-card {
+                padding: 14px !important;
+            }
+            #submit-section h3 {
+                font-size: 16px !important;
+            }
+            #submit-section p {
+                font-size: 10px !important;
+                line-height: 1.4 !important;
+                margin-bottom: 10px !important;
+            }
+            #submit-section .star-btn {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 16px !important;
+            }
+            #submit-section input,
+            #submit-section textarea {
+                font-size: 11px !important;
+                padding: 10px 12px !important;
+            }
+            .pill {
+                padding: 5px 12px !important;
+                font-size: 11px !important;
+            }
+            .review-item {
+                padding: 14px !important;
+                border-radius: 16px !important;
+                border-left: none !important;
+                margin-bottom: 14px !important;
+            }
+            .review-item .flex.justify-between {
+                margin-bottom: 8px !important;
+            }
+            .review-item p {
+                font-size: 11px !important;
+                line-height: 1.5 !important;
+            }
+            #reviewContainer {
+                gap: 14px !important;
+            }
+            #reviewContainer > div {
+                margin-bottom: 14px !important;
+            }
+        }
+
+
+        /* ════════════════════════════════════════════════════
+           💻 TABLET (768px - 1023px) - 2 columns
+        ════════════════════════════════════════════════════ */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .app-container {
+                padding: 24px;
+                padding-bottom: 120px;
+            }
+            .layout-grid {
+                display: grid;
+                grid-template-columns: 380px 1fr;
+                gap: 24px;
+                align-items: start;
+            }
+            .left-column {
+                position: sticky;
+                top: 24px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .right-column {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+
+        /* ════════════════════════════════════════════════════
+           🖥️ DESKTOP (1024px+) - Sidebar + 2 Column Layout
+        ════════════════════════════════════════════════════ */
+        @media (min-width: 1024px) {
+            body {
+                padding: 0 !important;
+            }
+
+            /* ซ่อน mobile navbar */
+            .nav-bar { display: none !important; }
+
+            /* ─── LEFT SIDEBAR ─── */
+            .desktop-sidebar {
+                position: fixed;
+                top: 20px; left: 20px; bottom: 20px;
+                width: 72px;
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(12px);
+                border-radius: 24px;
+                padding: 20px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                box-shadow: 0 8px 32px rgba(var(--c5rgb), 0.1);
+                z-index: 50;
+                border: 1px solid rgba(255, 255, 255, 0.6);
+            }
+            .desktop-sidebar .sidebar-logo {
+                width: 44px; height: 44px; border-radius: 50%;
+                background: linear-gradient(135deg, var(--c2), var(--c1));
+                display: flex; align-items: center; justify-content: center;
+                margin-bottom: 16px;
+                border: 2px solid white;
+                color: var(--c5x);
+            }
+            .desktop-sidebar a, .desktop-sidebar button.sidebar-btn {
+                width: 44px; height: 44px;
+                border-radius: 12px;
+                display: flex; align-items: center; justify-content: center;
+                color: #9CA3AF;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                transition: all 0.2s;
+                text-decoration: none;
+            }
+            .desktop-sidebar a:hover, .desktop-sidebar button.sidebar-btn:hover {
+                background: var(--c2);
+                color: var(--c5);
+            }
+            .desktop-sidebar a.active {
+                background: var(--c2);
+                color: var(--c5x);
+            }
+            .desktop-sidebar #logout-btn-sidebar {
+                margin-top: auto;
+                color: #EF4444;
+            }
+            .desktop-sidebar #logout-btn-sidebar:hover {
+                background: #FEE2E2;
+            }
+            /* ── Tooltip ── */
+            .desktop-sidebar a,
+            .desktop-sidebar button.sidebar-btn {
+                position: relative;
+            }
+            .desktop-sidebar a::after,
+            .desktop-sidebar button.sidebar-btn::after {
+                content: attr(title);
+                position: absolute;
+                left: 54px;
+                top: 50%;
+                transform: translateY(-50%) scale(0.88);
+                background: rgba(var(--cdarkrgb),0.88);
+                color: white;
+                padding: 5px 11px;
+                border-radius: 8px;
+                font-size: 11px;
+                font-weight: 700;
+                white-space: nowrap;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.18s, transform 0.18s;
+                z-index: 200;
+                font-family: 'Mali', cursive;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+            .desktop-sidebar a:hover::after,
+            .desktop-sidebar button.sidebar-btn:hover::after {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+
+            /* ─── MAIN CONTENT AREA ─── */
+            .app-container {
+                max-width: 100% !important;
+                padding-left: 112px;
+                padding-right: 32px;
+                padding-top: 32px;
+                padding-bottom: 32px;
+                margin: 0;
+            }
+
+            /* 2 columns grid: ซ้าย (420px) + ขวา (flex) */
+            .layout-grid {
+                display: grid;
+                grid-template-columns: 420px 1fr;
+                gap: 32px;
+                align-items: start;
+            }
+            .left-column {
+                position: sticky;
+                top: 32px;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                max-height: calc(100vh - 64px);
+                overflow-y: auto;
+            }
+            .right-column {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            /* scrollbar สวยๆ */
+            .left-column::-webkit-scrollbar { width: 6px; }
+            .left-column::-webkit-scrollbar-thumb {
+                background: var(--c5m); border-radius: 3px;
+            }
+
+            /* ─── Reviews List แสดงเป็น Grid 2 columns (desktop) ─── */
+            #reviewContainer {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr;  /* แบ่ง 2 ฝั่งเท่ากัน */
+                gap: 14px;
+            }
+            #reviewContainer > div {
+                margin-bottom: 0 !important;
+            }
+            /* ถ้า empty state → span ทั้ง 2 columns */
+            #reviewContainer > .glass-card.p-8 {
+                grid-column: 1 / -1;
+            }
+        }
+
+        /* ─── Top Review Card (highlight) ─── */
+        .top-review-card {
+            background: linear-gradient(135deg, var(--c4) 0%, #FFFFFF 100%);
+            border: 1.5px solid var(--c2);
+            border-radius: 16px;
+            padding: 14px;
+            position: relative;
+        }
+        .top-review-card::before {
+            content: '';
+            position: absolute;
+            top: 8px; right: 10px;
+            font-size: 16px;
+        }
+        .top-review-card .top-star {
+            color: #FACC15;
+            font-size: 12px;
+        }
+
+        /* ────────────────────────────────────────── */
+        /* ซ่อน desktop-sidebar บน mobile/tablet */
+        @media (max-width: 1023px) {
+            .desktop-sidebar { display: none !important; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(var(--c1rgb), 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .rating-bar {
+            height: 6px;
+            background: var(--c3);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background: var(--c5);
+            border-radius: 999px;
+        }
+
+        .pill {
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            background: white;
+            color: #E0A8B8;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid var(--c2);
+            white-space: nowrap;
+        }
+
+        .pill-active {
+            background: var(--c5);
+            color: white;
+            border-color: var(--c5);
+        }
+
+        input[type="text"],
+        textarea {
+            background-color: var(--c3) !important;
+            border: 1px solid var(--c2) !important;
+            color: var(--cdark);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #F0B8C4;
+        }
+
+        #submitBtn {
+            background-color: var(--c5) !important;
+            box-shadow: 0 8px 20px rgba(var(--c5rgb), 0.2);
+        }
+
+        .star-btn {
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #E5E7EB;
+            background-color: var(--c3) !important;
+        }
+
+        .star-active {
+            color: var(--c5) !important;
+        }
+
+        /* Mobile Navbar */
+        .nav-bar {
+            position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+            background:rgba(255,255,255,0.95); border-radius:24px;
+            padding:10px 24px; box-shadow:0 8px 32px rgba(0,0,0,0.08);
+            display:flex; justify-content:space-around; align-items:center;
+            z-index:100; border:1px solid rgba(255,255,255,0.6);
+            width:88%; max-width:320px; transition:max-width 0.3s ease;
+        }
+        .nav-bar a, .nav-bar button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.2s;
+        }
+        .nav-bar a:hover, .nav-bar button:hover {
+            color: #6b7280;
+        }
+        .nav-bar a.active {
+            color: var(--c5);
+        }
+        .nav-bar button#logout-btn {
+            color: #ef4444;
+            display: none;
+        }
+
+        /* Modal */
+        .moverlay {
+            display: none;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.3); z-index: 200;
+            align-items: center; justify-content: center;
+        }
+        .moverlay.show { display: flex; }
+        .mbox {
+            background: white; border-radius: 16px; padding: 24px;
+            box-shadow: 0 20px 25px rgba(0,0,0,0.15);
+            width: 90%; max-width: 500px;
+        }
+        .mbox h3 {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--cdark);
+        }
+        .fi {
+            width: 100%; padding: 10px 12px; border: 1.5px solid var(--c2);
+            border-radius: 12px; font-size: 14px; font-family: 'Mali', cursive;
+            background-color: var(--c3);
+        }
+        .fi:focus { outline: none; border-color: var(--c5); box-shadow: 0 0 0 3px rgba(var(--c5rgb), 0.1); }
+
+        /* Popup (toast) */
+        .gpop {
+            display: none;
+            position: fixed; top: 20px; right: 20px; z-index: 300;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            padding: 14px 18px 14px 16px; border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(var(--c5rgb),0.18), 0 4px 12px rgba(0,0,0,0.06);
+            border: 1px solid rgba(var(--c1rgb),0.7);
+            border-left: 4px solid var(--c5);
+            max-width: min(280px, 82vw);
+            font-size: 13px; font-weight: bold; color: var(--cdark);
+        }
+        .gpop.show { display: block; animation: toastIn 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes toastIn {
+            from { transform: translateX(110%) scale(0.88); opacity: 0; }
+            to   { transform: translateX(0)   scale(1);     opacity: 1; }
+        }
+        .gpop[data-type="error"]   { border-left-color: #EF4444; box-shadow: 0 12px 32px rgba(239,68,68,0.12), 0 4px 12px rgba(0,0,0,0.06); }
+        .gpop[data-type="warning"] { border-left-color: #F59E0B; box-shadow: 0 12px 32px rgba(245,158,11,0.12), 0 4px 12px rgba(0,0,0,0.06); }
+        @media (min-width: 1024px) {
+            .gpop { max-width: 360px; font-size: 15px; padding: 18px 20px; }
+        }
+
+        .review-item {
+            border-left: 4px solid var(--c5);
+            padding: 16px;
+        }
+
+        .admin-reply {
+            background: #F0FDF4;
+            border-left: 4px solid #22C55E;
+            padding: 12px;
+            margin-top: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* ── Plan Gate ─────────────────────────── */
+        .plan-free .pro-only { display: none !important; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #E0A8B8;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     DESKTOP SIDEBAR (desktop only)
+============================================================ -->
+<aside class="desktop-sidebar">
+    <div class="sidebar-logo">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+        </svg>
+    </div>
+    <a href="index.html" title="Home">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+    </a>
+    <a href="check.html" title="Check Queue">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+    </a>
+    <a href="review.html" class="active" title="Review">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+    </a>
+    <a href="admin.html" id="admin-sidebar-link" title="Admin" style="display:none;">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+    </a>
+    <button id="logout-btn-sidebar" class="sidebar-btn" onclick="logout()" title="ออกจากระบบ" style="display:none;">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+    </button>
+</aside>
+
+<!-- POPUP -->
+<div id="gpop" class="gpop">
+    <div id="gpop-msg">สำเร็จ!</div>
+</div>
+
+<!-- REPLY MODAL (admin only) -->
+<div id="reply-modal" class="moverlay">
+    <div class="mbox">
+        <h3>ตอบกลับรีวิว</h3>
+        <textarea id="reply-text" class="fi mb-4" placeholder="เขียนคำตอบของคุณ..." style="min-height:100px; resize: vertical;"></textarea>
+        <div class="flex gap-2">
+            <button onclick="closeReplyModal()" class="flex-1 py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-gray-400">ยกเลิก</button>
+            <button onclick="submitReply()" class="flex-1 py-2.5 bg-green-400 text-white rounded-xl text-sm font-bold">ส่งตอบกลับ</button>
+        </div>
+    </div>
+</div>
+
+<div class="app-container">
+    <div class="layout-grid">
+
+        <!-- LEFT COLUMN (Rating + Submit) -->
+        <div class="left-column">
+            
+            <div class="glass-card rating-summary-card p-6 flex items-center justify-between">
+                <div class="text-center border-r border-gray-100 pr-6">
+                    <p class="text-[10px] text-gray-400 italic mb-1">Review & Comment</p>
+                    <h2 class="text-5xl font-bold leading-none" id="avg-rating">—</h2>
+                    <div class="flex gap-0.5 my-2 justify-center text-[#FACC15]" id="avg-stars"></div>
+                    <p class="text-[10px] text-gray-400">(<span id="total-reviews">0</span> รีวิว)</p>
+                </div>
+                <div class="flex-1 pl-6 space-y-2" id="rating-bars">
+                    <div class="loading text-[11px]">กำลังโหลด...</div>
+                </div>
+            </div>
+
+            <div id="submit-section" class="glass-card p-6 text-center mt-2">
+                <h3 class="text-xl font-bold mb-1">Your Feedback</h3>
+                <p class="text-[11px] text-gray-400 leading-relaxed mb-4">
+                    ขอบคุณสำหรับการซับพอร์ตนะคะ ทุกงานเค้าตั้งใจทำมากน้า<br>ถ้าถูกใจรีวิว 5 ดาวให้เค้าหน่อยน้า
+                </p>
+
+                <div class="flex justify-center gap-2 mb-4">
+                    <span onclick="setStar(1)" class="star-btn w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-xl">★</span>
+                    <span onclick="setStar(2)" class="star-btn w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-xl">★</span>
+                    <span onclick="setStar(3)" class="star-btn w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-xl">★</span>
+                    <span onclick="setStar(4)" class="star-btn w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-xl">★</span>
+                    <span onclick="setStar(5)" class="star-btn w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-xl">★</span>
+                </div>
+
+                <div class="space-y-3">
+                    <input type="text" id="reviewerName" oninput="checkSubmit()" placeholder="ชื่อหรือนามแฝง*"
+                        class="w-full bg-gray-50 rounded-xl p-3 text-[12px] outline-none border-none">
+                    <textarea id="reviewComment" oninput="checkSubmit()" placeholder="พิมพ์รีวิวตรงนี้ได้เลยน้า..." rows="3"
+                        class="w-full bg-gray-50 rounded-xl p-3 text-[12px] outline-none border-none"></textarea>
+
+                    <button id="submitBtn"
+                        class="hidden w-full bg-[var(--c5)] text-white font-bold py-3 rounded-xl text-[13px] shadow-lg transition-all active:scale-95"
+                        onclick="submitReview()">
+                        ส่งรีวิว
+                    </button>
+                </div>
+            </div>
+
+            <!-- ═══════ TOP 5 REVIEWS (ตัวอย่างดาวเด่น) ═══════ -->
+            <div class="glass-card p-5 mt-2">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-sm font-bold flex items-center gap-1">
+                        <svg class="w-4 h-4 text-[#FACC15]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        </svg>
+                        รีวิวเด่น
+                    </h3>
+                    <span class="text-[10px] text-gray-400">5 ดาว</span>
+                </div>
+                <div id="top-reviews-list" class="space-y-2">
+                    <div class="text-[11px] text-gray-400 text-center py-3">กำลังโหลด...</div>
+                </div>
+            </div>
+
+            <div id="admin-notice" class="glass-card p-6 text-center" style="display:none; margin-top: 8px;">
+                <div class="w-14 h-14 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-7 h-7 text-rose-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold mb-1">โหมดแอดมิน</h3>
+                <p class="text-[11px] text-gray-400">คุณสามารถตอบกลับรีวิวได้</p>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN (Reviews List) -->
+        <div class="right-column">
+
+            <div class="overflow-x-auto">
+                <div class="flex gap-2 pb-2">
+                    <div class="pill pill-active" onclick="filterReviews('all', this)">★ All</div>
+                    <div class="pill" onclick="filterReviews(5, this)">★ 5</div>
+                    <div class="pill" onclick="filterReviews(4, this)">★ 4</div>
+                    <div class="pill" onclick="filterReviews(3, this)">★ 3</div>
+                    <div class="pill" onclick="filterReviews(2, this)">★ 2</div>
+                    <div class="pill" onclick="filterReviews(1, this)">★ 1</div>
+                </div>
+            </div>
+
+            <div id="reviewContainer" class="space-y-3">
+                <div class="glass-card loading">
+                    <p class="text-sm">กำลังโหลดรีวิว...</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- MOBILE NAVBAR -->
+<nav class="nav-bar">
+    <a href="index.html">
+        <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        <span>Home</span>
+    </a>
+    <a href="check.html">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <span>Check Q</span>
+    </a>
+    <a href="review.html" class="active">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+        <span>Review</span>
+    </a>
+    <a href="admin.html" id="admin-nav-link" style="display:none;">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>Admin</span>
+    </a>
+    <button id="logout-btn" onclick="logout()">
+        <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+        <span>ออก</span>
+    </button>
+</nav>
+
+<script>
+// ════════════════════════════════════════════════════
+// 🔌 SUPABASE CONNECTION
+// ════════════════════════════════════════════════════
+let sb;
+
+// ════════════════════════════════════════════════════
+// 📊 GLOBAL VARIABLES
+// ════════════════════════════════════════════════════
+let selectedStars = 0;
+let allReviews = [];
+let currentFilter = 'all';
+let currentReplyReviewId = null;
+
+// ════════════════════════════════════════════════════
+// 💬 SHOW POPUP
+// ════════════════════════════════════════════════════
+function showPopup(msg) {
+    const el = document.getElementById('gpop');
+    if (msg.startsWith('✅'))      el.dataset.type = 'success';
+    else if (msg.startsWith('❌')) el.dataset.type = 'error';
+    else if (msg.startsWith('⚠️')) el.dataset.type = 'warning';
+    else                           el.dataset.type = '';
+    document.getElementById('gpop-msg').textContent = msg;
+    el.classList.remove('show');
+    el.offsetHeight;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════════
+// ⭐ SET STAR
+// ════════════════════════════════════════════════════
+function setStar(n) {
+    selectedStars = n;
+    document.querySelectorAll('.star-btn').forEach((s, i) => {
+        if (i < n) s.classList.add('star-active');
+        else s.classList.remove('star-active');
+    });
+    checkSubmit();
+}
+
+// ════════════════════════════════════════════════════
+// ✅ CHECK SUBMIT
+// ════════════════════════════════════════════════════
+function checkSubmit() {
+    const name = document.getElementById('reviewerName').value.trim();
+    const btn = document.getElementById('submitBtn');
+    if (selectedStars > 0 && name) {
+        btn.classList.remove('hidden');
+    } else {
+        btn.classList.add('hidden');
+    }
+}
+
+// ════════════════════════════════════════════════════
+// 📤 SUBMIT REVIEW
+// ════════════════════════════════════════════════════
+async function submitReview() {
+    const name = document.getElementById('reviewerName').value.trim();
+    const comment = document.getElementById('reviewComment').value.trim();
+
+    if (!name || selectedStars === 0) {
+        showPopup('⚠️ กรุณากรอกข้อมูลให้ครบ');
+        return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'กำลังส่ง...';
+
+    const { error } = await sb.from('reviews').insert({
+        customer_name: name,
+        rating: selectedStars,
+        comment: comment || null,
+        review_date: new Date().toISOString(),
+        shop_id: SHOP_ID
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'ส่งรีวิว';
+
+    if (error) {
+        showPopup('❌ ส่งไม่สำเร็จ: ' + error.message);
+        console.error(error);
+        return;
+    }
+
+    showPopup('✅ ส่งรีวิวสำเร็จ!');
+    document.getElementById('reviewerName').value = '';
+    document.getElementById('reviewComment').value = '';
+    selectedStars = 0;
+    document.querySelectorAll('.star-btn').forEach(s => s.classList.remove('star-active'));
+    document.getElementById('submitBtn').classList.add('hidden');
+
+    await loadReviews();
+}
+
+// ════════════════════════════════════════════════════
+// 📥 LOAD REVIEWS
+// ════════════════════════════════════════════════════
+async function loadReviews() {
+    const { data, error } = await sb.from('reviews')
+        .select('*, review_replies(*)')
+        .eq('shop_id', SHOP_ID)
+        .order('review_date', { ascending: false });
+    
+    if (error) {
+        document.getElementById('reviewContainer').innerHTML = 
+            `<div class="glass-card p-6 text-center text-red-400"><p>ไม่สามารถโหลดรีวิว: ${error.message}</p></div>`;
+        console.error(error);
+        return;
+    }
+
+    allReviews = data || [];
+    updateRatingSummary();
+    renderReviews();
+}
+
+// ════════════════════════════════════════════════════
+// 📊 UPDATE RATING SUMMARY
+// ════════════════════════════════════════════════════
+function updateRatingSummary() {
+    if (allReviews.length === 0) {
+        document.getElementById('avg-rating').textContent = '—';
+        document.getElementById('avg-stars').textContent = '';
+        document.getElementById('total-reviews').textContent = '0';
+        document.getElementById('rating-bars').innerHTML = `
+            <div class="text-[11px] text-gray-400 text-center py-4">ยังไม่มีรีวิว</div>
+        `;
+        return;
+    }
+
+    const totalRating = allReviews.reduce((sum, r) => sum + (r.rating || 5), 0);
+    const avgRating = (totalRating / allReviews.length).toFixed(1);
+    
+    document.getElementById('avg-rating').textContent = avgRating;
+    document.getElementById('avg-stars').textContent = '★'.repeat(Math.round(avgRating));
+    document.getElementById('total-reviews').textContent = allReviews.length;
+
+    const counts = [0, 0, 0, 0, 0];
+    allReviews.forEach(r => {
+        const rating = r.rating || 5;
+        if (rating >= 1 && rating <= 5) counts[5 - rating]++;
+    });
+
+    const barsHtml = [5, 4, 3, 2, 1].map((rating, idx) => {
+        const pct = allReviews.length > 0 ? (counts[idx] / allReviews.length) * 100 : 0;
+        return `
+            <div class="flex items-center gap-3">
+                <span class="text-[11px] font-bold w-2">${rating}</span>
+                <div class="rating-bar flex-1">
+                    <div class="rating-fill" style="width: ${pct}%"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('rating-bars').innerHTML = barsHtml;
+
+    // ─── Render Top 5 Reviews (ดาวสูงสุด) ───
+    renderTopReviews();
+}
+
+// ════════════════════════════════════════════════════
+// ⭐ RENDER TOP 5 REVIEWS - รีวิวดาวสูงสุดล่าสุด
+// ════════════════════════════════════════════════════
+function renderTopReviews() {
+    const topReviews = allReviews
+        .filter(r => (r.rating || 0) === 5 && r.comment)  // เฉพาะ 5 ดาวที่มี comment
+        .slice(0, 5);
+
+    const el = document.getElementById('top-reviews-list');
+    if (!el) return;
+
+    if (topReviews.length === 0) {
+        el.innerHTML = '<p class="text-[11px] text-gray-400 text-center py-3">ยังไม่มีรีวิวเด่น</p>';
+        return;
+    }
+
+    el.innerHTML = topReviews.map(r => {
+        const shortComment = r.comment.length > 60 
+            ? r.comment.substring(0, 60) + '...' 
+            : r.comment;
+        return `
+            <div class="top-review-card">
+                <div class="flex justify-between items-start mb-1">
+                    <span class="text-[12px] font-bold text-gray-800">${escapeHtml(r.customer_name)}</span>
+                    <span class="top-star">${'★'.repeat(5)}</span>
+                </div>
+                <p class="text-[10px] text-gray-600 leading-relaxed">${escapeHtml(shortComment)}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+// ════════════════════════════════════════════════════
+// 🎨 RENDER REVIEWS
+// ════════════════════════════════════════════════════
+function renderReviews() {
+    let filtered = currentFilter === 'all' 
+        ? allReviews 
+        : allReviews.filter(r => (r.rating || 5) == currentFilter);
+
+    if (filtered.length === 0) {
+        document.getElementById('reviewContainer').innerHTML = 
+            '<div class="glass-card p-8 text-center text-gray-400"><p>ยังไม่มีรีวิวในหมวดนี้</p></div>';
+        return;
+    }
+
+    document.getElementById('reviewContainer').innerHTML = filtered.map(r => {
+        const reply = r.review_replies?.[0];
+        const stars = '★'.repeat(r.rating || 5);
+        const date = new Date(r.review_date).toLocaleDateString('th-TH', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+
+        return `
+            <div class="glass-card review-item">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-[13px] font-bold block">${escapeHtml(r.customer_name)}</span>
+                            <span class="text-[10px] text-gray-400">${date}</span>
+                        </div>
+                    </div>
+                    <span class="text-[#FACC15] text-[14px]">${stars}</span>
+                </div>
+                
+                ${r.comment ? `<p class="text-[12px] text-gray-600 mb-3">${escapeHtml(r.comment)}</p>` : ''}
+                
+                ${reply ? `
+                    <div class="admin-reply">
+                        <p class="font-bold text-green-700 mb-1">ตอบกลับจากแอดมิน:</p>
+                        <p>${escapeHtml(reply.admin_reply)}</p>
+                    </div>
+                ` : isAdmin() ? `
+                    <button onclick="openReplyModal('${r.id}')"
+                        class="w-full py-2 bg-rose-100 text-rose-600 rounded-lg text-xs font-bold hover:bg-rose-200 transition pro-only">
+                        ตอบกลับ
+                    </button>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// ════════════════════════════════════════════════════
+// 🔍 FILTER REVIEWS
+// ════════════════════════════════════════════════════
+function filterReviews(star, el) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('pill-active'));
+    el.classList.add('pill-active');
+    currentFilter = star;
+    renderReviews();
+}
+
+// ════════════════════════════════════════════════════
+// 💬 REPLY MODAL
+// ════════════════════════════════════════════════════
+function openReplyModal(reviewId) {
+    if (window.PLAN !== 'pro') {
+        showPopup('🔒 ฟีเจอร์นี้สำหรับแพลน Pro เท่านั้น');
+        return;
+    }
+    if (!isAdmin()) {
+        showPopup('⚠️ ต้องเป็นแอดมินเท่านั้น');
+        return;
+    }
+    currentReplyReviewId = reviewId;
+    document.getElementById('reply-modal').classList.add('show');
+    document.getElementById('reply-text').value = '';
+    setTimeout(() => document.getElementById('reply-text').focus(), 100);
+}
+
+function closeReplyModal() {
+    document.getElementById('reply-modal').classList.remove('show');
+    currentReplyReviewId = null;
+}
+
+async function submitReply() {
+    if (!currentReplyReviewId) return;
+    const replyText = document.getElementById('reply-text').value.trim();
+    if (!replyText) {
+        showPopup('⚠️ กรุณากรอกคำตอบ');
+        return;
+    }
+
+    const { error } = await sb.from('review_replies').insert({
+        review_id: currentReplyReviewId,
+        admin_reply: replyText,
+        shop_id: SHOP_ID
+    });
+
+    if (error) {
+        showPopup('❌ ส่งไม่สำเร็จ: ' + error.message);
+        return;
+    }
+
+    closeReplyModal();
+    showPopup('✅ ตอบกลับสำเร็จ!');
+    await loadReviews();
+}
+
+// ════════════════════════════════════════════════════
+// 🛡️ HELPERS
+// ════════════════════════════════════════════════════
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// ════════════════════════════════════════════════════
+// 🔐 AUTH
+// ════════════════════════════════════════════════════
+function isAdmin() {
+    return sessionStorage.getItem('isAdmin') === 'true' || localStorage.getItem('vvs_admin_token') === 'true';
+}
+
+function logout() {
+    sessionStorage.removeItem('isAdmin');
+    localStorage.removeItem('vvs_admin_token');
+    window.location.href = 'index.html';
+}
+
+// ════════════════════════════════════════════════════
+// 🚀 INIT
+// ════════════════════════════════════════════════════
+async function init() {
+    injectCR();
+    sb.from('settings').select('key,value').eq('shop_id', SHOP_ID)
+        .then(({ data }) => {
+            if (!data) return;
+            const s = Object.fromEntries(data.map(r => [r.key, r.value]));
+            if (s.site_theme) window.setTheme(s.site_theme);
+        });
+    const logoutBtn = document.getElementById('logout-btn');
+    const adminNavLink = document.getElementById('admin-nav-link');
+    const adminSidebar = document.getElementById('admin-sidebar-link');
+    const logoutSidebar = document.getElementById('logout-btn-sidebar');
+    const submitSection = document.getElementById('submit-section');
+    const adminNotice = document.getElementById('admin-notice');
+    
+    if (isAdmin()) {
+        // Mobile navbar
+        if (logoutBtn) logoutBtn.style.display = 'flex';
+        if (adminNavLink) adminNavLink.style.display = 'flex';
+        // Desktop sidebar
+        if (adminSidebar) adminSidebar.style.display = 'flex';
+        if (logoutSidebar) logoutSidebar.style.display = 'flex';
+        // Admin mode UI
+        if (submitSection) submitSection.style.display = 'none';
+        if (adminNotice) adminNotice.style.display = 'block';
+    }
+
+    await loadReviews();
+
+    sb.channel('review-rt')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews', filter: `shop_id=eq.${SHOP_ID}` }, loadReviews)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'review_replies', filter: `shop_id=eq.${SHOP_ID}` }, loadReviews)
+        .subscribe();
+}
+
+
+// ─── PLAN: CR WATERMARK ──────────────────────────
+function injectCR() {
+    if (window.PLAN !== 'free') return;
+    const el = document.createElement('a');
+    el.href = 'https://www.instagram.com/vivivalen.st/';
+    el.target = '_blank';
+    el.rel = 'noopener noreferrer';
+    el.title = 'Powered by vivivalen.st';
+    el.style.cssText = [
+        'position:fixed','bottom:8px','right:10px','z-index:9999',
+        'font-size:9px','font-family:Mali,cursive','font-style:italic',
+        'color:var(--c5)','opacity:0.8','text-decoration:none',
+        'background:rgba(255,255,255,0.75)','padding:3px 8px',
+        'border-radius:999px','pointer-events:auto',
+        'backdrop-filter:blur(4px)',
+        'border:1px solid rgba(var(--c5rgb),0.2)',
+        'box-shadow:0 2px 6px rgba(0,0,0,0.06)'
+    ].join(';');
+    el.textContent = '✦ made by Vivi Valenst';
+    document.body.appendChild(el);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    init();
+});
+</script>
+
+</body>
+</html>
